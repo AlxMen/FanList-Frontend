@@ -21,7 +21,7 @@ function App() {
           <Route path="singup" element={<Singup />} />
           <Route path="recovery-password" element={<ForgotPassword />} />
           <Route path="recovery-password/:token" element={<NewPassword />} />
-          <Route path="confrim/:id" element={<ConfirmAccount />} />
+          <Route path="confirm/:id" element={<ConfirmAccount />} />
 
         </Route>
       </Routes>

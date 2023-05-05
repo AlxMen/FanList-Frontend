@@ -1,7 +1,7 @@
 import { useState } from "react"
 import { Link } from "react-router-dom"
 import Alert from "../components/Alert"
-import axios from "axios"
+import clienteAxios from "../config/clienteAxios"
 
 const Singup = () => {
 
@@ -41,7 +41,7 @@ const Singup = () => {
     setAlerta({})
 
     try {
-      const {data} = await axios.post(`${import.meta.env.VITE_BACK_URL}/user`, { name: nombre, email, password })
+      const {data} = await clienteAxios.post(`/user`, { name: nombre, email, password })
       setAlerta({
         msg: data.msg,
         error: false

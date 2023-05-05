@@ -1,12 +1,49 @@
-import { Link } from "react-router-dom"
-
+import { useState } from "react"
+import { Link, useNavigate } from "react-router-dom"
+import Alert from "../components/Alert"
+import clienteAxios from "../config/clienteAxios"
 
 const Login = () => {
+
+  const [email, setEmail] = useState('')
+  const [password, setPassword] = useState('')
+  const [alerta, setAlerta] = useState({})
+
+  const handleSubmit = async e => {
+    e.preventDefault()
+
+    if ([email, password].includes('')) {
+      setAlerta({
+        msg: 'Todos los campos son obligatorios',
+        error: true
+      })
+      return
+    }
+
+    try {
+      const { data } = await clienteAxios.post(`/user/login`, {email, password})
+      setAlerta({})
+      localStorage.setItem('token', data.token)
+    } catch (error) {
+      setAlerta({
+        msg: error.response.data.msg,
+        error: true
+      })
+    }
+  }
+
+  const { msg } = alerta
+
   return (
     <>
       <h1 className="text-green-400 font-black text-6xl capitalize text-center">Inicia Sesión <span className="text-green-700">y crea tus <span className="text-yellow-500">FanList</span></span></h1>
 
-      <form className="my-10 bg-white shadow rounded-lg p-10">
+      {msg && <Alert alerta={alerta} />}
+
+      <form
+        className="my-10 bg-white shadow rounded-lg p-10"
+        onSubmit={handleSubmit}
+      >
         <div className="my-5">
           <label htmlFor="email" className="uppercase text-gray-600 block text-xl font-bold">Email</label>
           <input
@@ -14,6 +51,8 @@ const Login = () => {
             type="email"
             placeholder="Example123@gmail.com"
             className="w-full mt-3 p-3 border rounded-xl bg-gray-50"
+            value={email}
+            onChange={e => setEmail(e.target.value)}
           />
         </div>
         <div className="my-5">
@@ -23,6 +62,8 @@ const Login = () => {
             type="password"
             placeholder="********"
             className="w-full mt-3 p-3 border rounded-xl bg-gray-50"
+            value={password}
+            onChange={e => setPassword(e.target.value)}
           />
         </div>
 
