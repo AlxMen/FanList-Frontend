@@ -1,12 +1,12 @@
-
+import FormularioLista from "../components/FormularioLista"
 
 const NewList = () => {
   return (
     <>
-    <h1 className="text-4xl font-black">Nueva Lista</h1>
+    <h1 className="text-4xl font-black">crear Lista</h1>
 
-    <div>
-      
+    <div className="mt-10 flex justify-center">
+      <FormularioLista />
     </div>
   </>
   )

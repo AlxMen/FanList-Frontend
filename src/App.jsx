@@ -10,6 +10,7 @@ import NewPassword from "./pages/NewPassword"
 import ConfirmAccount from "./pages/ConfirmAccount"
 import Lists from "./pages/Lists"
 import NewList from "./pages/NewList"
+import List from "./pages/List"
 
 import { AuthProvaider } from './context/AuthProvaider'
 import { ListsProvaider } from "./context/ListsProvaider"
@@ -36,6 +37,7 @@ function App() {
             <Route path="/list" element={<RouteProtect />}>
               <Route index element={<Lists />} />
               <Route path="new-list" element={<NewList />} />
+              <Route path=":id" element={<List />} />
             </Route>
           </Routes>
         </ListsProvaider>
