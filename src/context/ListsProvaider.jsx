@@ -10,6 +10,7 @@ const ListsProvaider = ({ children }) => {
   const [alerta, setAlerta] = useState({})
   const [list, setList] = useState({})
   const [cargando, setCargando] = useState(false)
+  const [ modalFormColumn, setModalFormColumn] = useState(false)
 
   const navigate = useNavigate()
 
@@ -169,6 +170,10 @@ const ListsProvaider = ({ children }) => {
     
   }
 
+  const handleModalColumns = () =>{
+    setModalFormColumn(!modalFormColumn)
+  }
+
   return (
     <ListsContext.Provider
       value={{
@@ -179,7 +184,9 @@ const ListsProvaider = ({ children }) => {
         getList,
         list,
         cargando,
-        deleteList
+        deleteList,
+        modalFormColumn,
+        handleModalColumns
       }}
     >
       {children}

@@ -2,7 +2,7 @@ import { Link } from "react-router-dom"
 
 const Header = () => {
   return (
-    <header className="px-4 py-5 bg-green-200 border-b">
+    <header className="px-4 py-5 bg-green-200 border-b border-black">
       <div className="md:flex md:justify-between">
         <h2 className="text-4xl text-yellow-500 font-black text-center">
           Fanlist
