@@ -6,7 +6,7 @@ import Alert from "./Alert"
 
 const FormularioLista = () => {
   const [id, setId] = useState(null)
-  const [nombre, setNombre] = useState('')
+  const [name, setName] = useState('')
 
   const { showAlert, alerta, submitList, list } = useLists()
   const params = useParams()
@@ -14,27 +14,27 @@ const FormularioLista = () => {
   useEffect(() => {
     if (params.id) {
       setId(list._id)
-      setNombre(list.name)
+      setName(list.name)
     }else {
 
     }
   }, [params])
 
   const handleSubmit = async e => {
-    e.preventeDefault()
+    e.preventDefault()
 
-    if (nombre === '') {
+    if (name === '') {
       showAlert({
-        msg: 'El nombre de la lista es obligatorio',
+        msg: 'El name de la lista es obligatorio',
         error: true
       })
       return
     }
 
-    await submitList({id, nombre })
+    await submitList({id, name })
 
     setId(null)
-    setNombre('')
+    setName('')
   }
 
   const { msg } = alerta
@@ -58,15 +58,15 @@ const FormularioLista = () => {
           type="text"
           className="border w-full p-2 mt-2 placeholder-gray-400 rounded-md"
           placeholder="[series, peliculas, juegos, nombre proyecto, etc.]"
-          value={nombre}
-          onChange={e => setNombre(e.target.value)}
+          value={name}
+          onChange={e => setName(e.target.value)}
         />
       </div>
 
       <input
         type="submit"
-        value={id ? 'Actualizar Lista' : 'Crear Lista'}
-        className='bg-green-600 w-full p-3 uppercase font-bold text-white rounded cursor-pointer hover:bg-green-700 transition-colors'
+        value={id === null ? 'Crear Lista' : 'Actualizar Lista'}
+        className='bg-green-600 w-full p-3 mt-3 uppercase font-bold text-white rounded cursor-pointer hover:bg-green-700 transition-colors'
       />
 
     </form>

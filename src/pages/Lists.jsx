@@ -5,7 +5,6 @@ const Lists = () => {
 
   const { lists } = useLists()
 
-
   return (
     <>
       <h1 className="text-4xl font-black">Listas</h1>

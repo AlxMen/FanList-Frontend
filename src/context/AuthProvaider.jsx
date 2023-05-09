@@ -9,6 +9,7 @@ const AuthProvaider = ({children}) => {
 
   const [auth, setAuth] = useState({})
   const [cargando, setCargando] = useState(true)
+  const navigate = useNavigate()
 
   useEffect(() => {
 
@@ -30,6 +31,7 @@ const AuthProvaider = ({children}) => {
       try {
           const { data } = await clienteAxios.get('/user/perfil', config)
           setAuth(data)
+          navigate('/list')
       } catch (error) {
           setAuth({})
       }

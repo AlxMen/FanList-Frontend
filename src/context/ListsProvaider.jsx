@@ -78,7 +78,7 @@ const ListsProvaider = ({ children }) => {
 
       setTimeout(() => {
         setAlerta({})
-        navigate('/lists')
+        navigate('/list')
       }, 2000)
     } catch (error) {
       console.log(error);
@@ -97,7 +97,6 @@ const ListsProvaider = ({ children }) => {
           Authorization: `Bearer ${token}`
         }
       }
-
       const { data } = await clienteAxios.post('/list', list, config)
 
       setLists([...lists, data])
@@ -108,7 +107,7 @@ const ListsProvaider = ({ children }) => {
 
       setTimeout(() => {
         setAlerta({})
-        navigate('/lists')
+        navigate('/list')
       }, 2000)
     } catch (error) {
       console.log(error);
@@ -129,13 +128,45 @@ const ListsProvaider = ({ children }) => {
       }
 
       const { data } = await clienteAxios.get(`/list/${id}`, config)
-      setList(data)
+      setList(data.list)
     } catch (error) {
       console.log(error);
     }
 
     setCargando(false)
 
+  }
+
+  const deleteList = async id => {
+    try {
+      const token = localStorage.getItem('token')
+      if (!token) return
+
+      const config = {
+        headers: {
+          "content-Type": "application/json",
+          Authorization: `Bearer ${token}`
+        }
+      }
+
+      const { data } = await clienteAxios.delete(`/list/${id}`, config)
+
+      const listasActualizadas = lists.filter(listState => listState._id !== id)
+      setLists(listasActualizadas)
+
+      setAlerta({
+        msg: data.msg,
+        error: false
+      })
+
+      setTimeout(() => {
+        setAlerta({})
+        navigate('/list')
+      }, 2000)
+    } catch (error) {
+      console.log(error);
+    }
+    
   }
 
   return (
@@ -147,7 +178,8 @@ const ListsProvaider = ({ children }) => {
         submitList,
         getList,
         list,
-        cargando
+        cargando,
+        deleteList
       }}
     >
       {children}

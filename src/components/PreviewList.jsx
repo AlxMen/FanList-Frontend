@@ -1,16 +1,14 @@
-import { split } from "postcss/lib/list"
 import { Link } from "react-router-dom"
 
 const PreviewList = (list) => {
 
-  const {name, date, _id} = list
-
+  const { _id, date, name } = list.list
   return (
     <div className="border-b p-5 flex">
       <p className="flex-1">
         {name}
 
-        <span className="text-sm text-gray-500 uppercase">{''}{date.split('T')[0]}</span>
+        <span className="text-sm text-gray-500 ml-4">{'Creado: '}{date.split('T')[0]}</span>
       </p>
       <Link
         to={`${_id}`}
