@@ -1,12 +1,33 @@
 import { Fragment, useState, useEffect } from 'react'
 import { Dialog, Transition } from '@headlessui/react'
 import useLists from '../hooks/useLists'
+import Alert from './Alert'
+import { useParams } from 'react-router-dom'
 
 const ModalFormularioColumn = () => {
 
   const [name, setName] = useState('')
 
-  const { modalFormColumn, handleModalColumns } = useLists()
+  const params = useParams()
+
+  const { modalFormColumn, handleModalColumns, showAlert, alerta, submitColumn } = useLists()
+
+  const handleSubmit = e => {
+    e.preventDefault()
+
+    if ([name].includes('')) {
+      showAlert({
+        msg: 'Todos los campos son obligatorios',
+        error: true
+      })
+      return
+    }
+    
+    submitColumn({name, listowner: params.id})
+
+  }
+
+  const {msg} = alerta
 
   return (
     <Transition.Root show={modalFormColumn} as={Fragment}>
@@ -62,7 +83,8 @@ const ModalFormularioColumn = () => {
                   <Dialog.Title as="h3" className="text-lg leading-6 font-bold text-gray-900">
                     Crear Seccion
                   </Dialog.Title>
-                  <form className='my-10'>
+                  {msg && <Alert alerta={alerta}/> }
+                  <form className='my-10' onSubmit={handleSubmit}>
                     <div>
                       <label htmlFor="name" className='text-gray-700 uppercase font-bold text-sm' >
                         Nombre de la seccion

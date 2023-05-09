@@ -174,6 +174,27 @@ const ListsProvaider = ({ children }) => {
     setModalFormColumn(!modalFormColumn)
   }
 
+  const submitColumn = async column => {
+    try {
+      const token = localStorage.getItem('token')
+      if (!token) return
+
+      const config = {
+        headers: {
+          "content-Type": "application/json",
+          Authorization: `Bearer ${token}`
+        }
+      }
+
+      const {data} = await clienteAxios.post('/column', column, config)
+
+      console.log(data);
+
+    } catch (error) {
+      console.log(error);
+    }
+  }
+
   return (
     <ListsContext.Provider
       value={{
@@ -186,7 +207,8 @@ const ListsProvaider = ({ children }) => {
         cargando,
         deleteList,
         modalFormColumn,
-        handleModalColumns
+        handleModalColumns,
+        submitColumn
       }}
     >
       {children}
