@@ -11,6 +11,7 @@ import ConfirmAccount from "./pages/ConfirmAccount"
 import Lists from "./pages/Lists"
 import NewList from "./pages/NewList"
 import List from "./pages/List"
+import EditList from "./pages/EditList"
 
 import { AuthProvaider } from './context/AuthProvaider'
 import { ListsProvaider } from "./context/ListsProvaider"
@@ -38,6 +39,7 @@ function App() {
               <Route index element={<Lists />} />
               <Route path="new-list" element={<NewList />} />
               <Route path=":id" element={<List />} />
+              <Route path="editar/:id" element={<EditList />} />
             </Route>
           </Routes>
         </ListsProvaider>

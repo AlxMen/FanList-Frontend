@@ -1,13 +1,24 @@
-import { useState } from "react"
+import { useState, useEffect } from "react"
+import { useParams } from "react-router-dom"
 import useLists from "../hooks/useLists"
 import Alert from "./Alert"
 
 
 const FormularioLista = () => {
-
+  const [id, setId] = useState(null)
   const [nombre, setNombre] = useState('')
 
-  const { showAlert, alerta, submitList } = useLists()
+  const { showAlert, alerta, submitList, list } = useLists()
+  const params = useParams()
+
+  useEffect(() => {
+    if (params.id) {
+      setId(list._id)
+      setNombre(list.name)
+    }else {
+
+    }
+  }, [params])
 
   const handleSubmit = async e => {
     e.preventeDefault()
@@ -20,8 +31,9 @@ const FormularioLista = () => {
       return
     }
 
-    await submitList({nombre})
+    await submitList({id, nombre })
 
+    setId(null)
     setNombre('')
   }
 
@@ -53,7 +65,7 @@ const FormularioLista = () => {
 
       <input
         type="submit"
-        value="Crear Lista"
+        value={id ? 'Actualizar Lista' : 'Crear Lista'}
         className='bg-green-600 w-full p-3 uppercase font-bold text-white rounded cursor-pointer hover:bg-green-700 transition-colors'
       />
 

@@ -44,6 +44,49 @@ const ListsProvaider = ({ children }) => {
   }
 
   const submitList = async list => {
+
+    if (list.id) {
+      await updateList(list)
+    } else {
+      await newList(list)
+    }
+
+
+  }
+
+  const updateList = async list => {
+    try {
+      const token = localStorage.getItem('token')
+      if (!token) return
+
+      const config = {
+        headers: {
+          "content-Type": "application/json",
+          Authorization: `Bearer ${token}`
+        }
+      }
+
+      const {data} = await clienteAxios.put(`/list/lista/${list.id}`, list, config)
+
+      const listasActualizadas = lists.map(listState => listState._id === data._id ? data : listState)
+      setLists(listasActualizadas)
+
+      setAlerta({
+        msg: 'Lista actualizada correctamente',
+        error: false
+      })
+
+      setTimeout(() => {
+        setAlerta({})
+        navigate('/lists')
+      }, 2000)
+    } catch (error) {
+      console.log(error);
+    }
+
+  }
+
+  const newList = async list => {
     try {
       const token = localStorage.getItem('token')
       if (!token) return
@@ -66,7 +109,7 @@ const ListsProvaider = ({ children }) => {
       setTimeout(() => {
         setAlerta({})
         navigate('/lists')
-      }, 3000)
+      }, 2000)
     } catch (error) {
       console.log(error);
     }
