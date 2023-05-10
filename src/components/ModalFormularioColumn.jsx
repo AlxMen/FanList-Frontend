@@ -12,7 +12,7 @@ const ModalFormularioColumn = () => {
 
   const { modalFormColumn, handleModalColumns, showAlert, alerta, submitColumn } = useLists()
 
-  const handleSubmit = e => {
+  const handleSubmit = async e => {
     e.preventDefault()
 
     if ([name].includes('')) {
@@ -23,8 +23,9 @@ const ModalFormularioColumn = () => {
       return
     }
     
-    submitColumn({name, listowner: params.id})
+    await submitColumn({name, listowner: params.id})
 
+    setName('')
   }
 
   const {msg} = alerta

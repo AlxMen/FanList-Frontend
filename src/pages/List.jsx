@@ -2,6 +2,7 @@ import { useParams, Link } from "react-router-dom"
 import useLists from "../hooks/useLists"
 import { useEffect, useState } from "react"
 import ModalFormularioColumn from "../components/ModalFormularioColumn"
+import Columns from "../components/Columns"
 
 const List = () => {
 
@@ -11,7 +12,7 @@ const List = () => {
     getList(params.id)
   }, [])
 
-  const { name, date } = list
+  const { name, date, columns } = list
 
   if (cargando) return 'Cargando...'
 
@@ -41,6 +42,12 @@ const List = () => {
 
         nueva seccion
       </button>
+
+      {columns?.length ?
+        columns?.map(column => (
+          <Columns key={column._id} column={column} />
+        )) : <p className="text-center text-gray-600 uppercase p-5 ">No hay secciones creadas</p>}
+
       <ModalFormularioColumn />
     </>
   )

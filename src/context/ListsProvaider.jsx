@@ -188,8 +188,12 @@ const ListsProvaider = ({ children }) => {
 
       const {data} = await clienteAxios.post('/column', column, config)
 
-      console.log(data);
+      const listaActualizada = { ...list }
+      listaActualizada.columns = [...list.columns, data]
 
+      setList(listaActualizada)
+      setAlerta({})
+      setModalFormColumn(false)
     } catch (error) {
       console.log(error);
     }
