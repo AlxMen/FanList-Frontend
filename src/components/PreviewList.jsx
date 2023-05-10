@@ -4,7 +4,7 @@ const PreviewList = (list) => {
 
   const { _id, date, name } = list.list
   return (
-    <div className="border-b p-5 flex">
+    <div className="border-b p-5 flex flex-col md:flex-row justify-between">
       <p className="flex-1">
         {name}
 

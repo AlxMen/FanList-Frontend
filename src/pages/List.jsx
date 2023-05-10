@@ -1,13 +1,15 @@
 import { useParams, Link } from "react-router-dom"
 import useLists from "../hooks/useLists"
-import { useEffect, useState } from "react"
+import { useEffect } from "react"
 import ModalFormularioColumn from "../components/ModalFormularioColumn"
+import ModalEliminarColumn from "../components/ModalEliminarColumn"
 import Columns from "../components/Columns"
+import Alert from "../components/Alert"
 
 const List = () => {
 
   const params = useParams()
-  const { getList, list, cargando, handleModalColumns } = useLists()
+  const { getList, list, cargando, handleModalColumns, alerta } = useLists()
   useEffect(() => {
     getList(params.id)
   }, [])
@@ -15,6 +17,8 @@ const List = () => {
   const { name, date, columns } = list
 
   if (cargando) return 'Cargando...'
+
+  const { msg } = alerta
 
   return (
     <>
@@ -43,12 +47,19 @@ const List = () => {
         nueva seccion
       </button>
 
+      <div className="flex justify-center">
+        <div className="w-full md:w-1/3 lg:w-1/4">
+          {msg && <Alert alerta={alerta} />}
+        </div>
+      </div>
+
       {columns?.length ?
         columns?.map(column => (
           <Columns key={column._id} column={column} />
         )) : <p className="text-center text-gray-600 uppercase p-5 ">No hay secciones creadas</p>}
 
       <ModalFormularioColumn />
+      <ModalEliminarColumn />
     </>
   )
 }

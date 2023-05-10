@@ -1,50 +1,15 @@
 import { Fragment, useState, useEffect } from 'react'
 import { Dialog, Transition } from '@headlessui/react'
 import useLists from '../hooks/useLists'
-import Alert from './Alert'
-import { useParams } from 'react-router-dom'
 
-const ModalFormularioColumn = () => {
 
-  const [id, setId] = useState('')
-  const [name, setName] = useState('')
+const ModalEliminarColumn = () => {
 
-  const params = useParams()
-
-  const { modalFormColumn, handleModalColumns, showAlert, alerta, submitColumn, column } = useLists()
-
-  useEffect(() => {
-    if (column?._id) {
-      setId(column._id)
-      setName(column.name)
-      return
-    }
-    setId('')
-    setName('')
-  }, [column])
-
-  const handleSubmit = async e => {
-    e.preventDefault()
-
-    if ([name].includes('')) {
-      showAlert({
-        msg: 'Todos los campos son obligatorios',
-        error: true
-      })
-      return
-    }
-    
-    await submitColumn({id, name, listowner: params.id})
-
-    setId('')
-    setName('')
-  }
-
-  const {msg} = alerta
+  const { modalDelColumn, handleModalEliminarColumn, eliminarColumn } = useLists()
 
   return (
-    <Transition.Root show={modalFormColumn} as={Fragment}>
-      <Dialog as="div" className="fixed z-10 inset-0 overflow-y-auto" onClose={handleModalColumns}>
+    <Transition.Root show={modalDelColumn} as={Fragment}>
+      <Dialog as="div" className="fixed z-10 inset-0 overflow-y-auto" onClose={handleModalEliminarColumn}>
         <div className="flex items-end justify-center min-h-screen pt-4 px-4 pb-20 text-center sm:block sm:p-0">
           <Transition.Child
             as={Fragment}
@@ -81,7 +46,7 @@ const ModalFormularioColumn = () => {
                 <button
                   type="button"
                   className="bg-white rounded-md text-gray-400 hover:text-gray-500 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
-                  onClick={handleModalColumns}
+                  onClick={handleModalEliminarColumn}
                 >
                   <span className="sr-only">Cerrar</span>
                   <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" viewBox="0 0 20 20" fill="currentColor">
@@ -92,32 +57,36 @@ const ModalFormularioColumn = () => {
 
 
               <div className="sm:flex sm:items-start">
+                <div className="mx-auto flex-shrink-0 flex items-center justify-center h-12 w-12 rounded-full bg-red-100 sm:mx-0 sm:h-10 sm:w-10">
+                  <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6 text-red-600" viewBox="0 0 20 20" fill="currentColor">
+                    <path fillRule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7 4a1 1 0 11-2 0 1 1 0 012 0zm-1-9a1 1 0 00-1 1v4a1 1 0 102 0V6a1 1 0 00-1-1z" clipRule="evenodd" />
+                  </svg>
+                </div>
                 <div className="mt-3 text-center sm:mt-0 sm:ml-4 sm:text-left w-full">
                   <Dialog.Title as="h3" className="text-lg leading-6 font-bold text-gray-900">
-                    {id ? 'Editar Seccion' : 'Crear Seccion'}
+                    Eliminar Seccion
                   </Dialog.Title>
-                  {msg && <Alert alerta={alerta}/> }
-                  <form className='my-10' onSubmit={handleSubmit}>
-                    <div>
-                      <label htmlFor="name" className='text-gray-700 uppercase font-bold text-sm' >
-                        Nombre de la seccion
-                      </label>
-                      <input
-                        type="text"
-                        id='name'
-                        placeholder='Nombre de la seccion'
-                        className='boder-2 w-full p-2 mt-2 placeholder-gray-400 rounded-md'
-                        value={name}
-                        onChange={e => setName(e.target.value)}
-                      />
-                    </div>
-                    <input 
-                      type="submit" 
-                      className='bg-green-600 hover:bg-green-800 w-full mt-5 p-3 text-white uppercase font-bold cursor-pointer transition-colors rounded text-sm'
-                      value={id ? 'Guardar Cambios' : 'Crear Seccion'}
-                    />
-                  </form>
+                  <div className='mt-2'>
+                    <p className='text-sm text-gray-500'>
+                      Una vez se elimine la seccion no se podra recuperar ninguna tarjeta de la seccion
+                    </p>
+
+                  </div>
                 </div>
+              </div>
+              <div className="mt-5 sm:mt-4 sm:flex sm:flex-row-reverse">
+                <button
+                  type="button"
+                  className="w-full inline-flex justify-center rounded-md border border-transparent shadow-sm px-4 py-2 bg-red-600 text-base font-medium text-white hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500 sm:ml-3 sm:w-auto sm:text-sm"
+                  onClick={eliminarColumn}
+                >
+                  Eliminar
+                </button>
+                <button
+                  type="button"
+                  className="mt-3 w-full inline-flex justify-center rounded-md border border-gray-300 shadow-sm px-4 py-2 bg-white text-base font-medium text-gray-700 hover:text-gray-500 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 sm:mt-0 sm:w-auto sm:text-sm"
+                  onClick={handleModalEliminarColumn}
+                > Cancelar</button>
               </div>
             </div>
           </Transition.Child>
@@ -127,4 +96,4 @@ const ModalFormularioColumn = () => {
   )
 }
 
-export default ModalFormularioColumn
+export default ModalEliminarColumn
