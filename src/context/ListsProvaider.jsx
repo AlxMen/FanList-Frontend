@@ -1,6 +1,7 @@
 import { useState, useEffect, createContext } from "react"
 import clienteAxios from "../config/clienteAxios"
 import { useNavigate } from "react-router-dom"
+import useAuth from "../hooks/useAuth"
 
 const ListsContext = createContext()
 
@@ -20,6 +21,8 @@ const ListsProvaider = ({ children }) => {
   const [modalDelCard, setModalDelCard] = useState(false)
 
   const navigate = useNavigate()
+
+  const {auth} = useAuth()
 
   useEffect(() => {
     const getLists = async () => {
@@ -41,7 +44,7 @@ const ListsProvaider = ({ children }) => {
       }
     }
     getLists()
-  }, [])
+  }, [auth])
 
   const showAlert = alert => {
     setAlerta(alert)
