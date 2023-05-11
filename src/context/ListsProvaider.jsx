@@ -396,6 +396,15 @@ const ListsProvaider = ({ children }) => {
     }
   }
 
+  const cerrarSesionList = () => {
+    setLists([])
+    setAlerta({})
+    setList({})
+    setColumn({})
+    setCards([])
+    setCard({})
+  }
+
   return (
     <ListsContext.Provider
       value={{
@@ -425,7 +434,8 @@ const ListsProvaider = ({ children }) => {
         handleModalEditCard,
         handleModalEliminarCard,
         modalDelCard,
-        eliminarCard
+        eliminarCard,
+        cerrarSesionList
       }}
     >
       {children}

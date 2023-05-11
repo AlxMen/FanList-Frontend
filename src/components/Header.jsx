@@ -1,10 +1,18 @@
 import { Link } from "react-router-dom"
 import useLists from "../hooks/useLists"
+import useAuth from "../hooks/useAuth"
 import Busqueda from "./Busqueda"
 
 const Header = () => {
 
-  const { handleBuscador } = useLists()
+  const { handleBuscador, cerrarSesionList } = useLists()
+  const { cerrarSesionAuth } = useAuth()
+
+  const handleCerrarSesion = () => {
+    cerrarSesionList()
+    cerrarSesionAuth()
+    localStorage.removeItem('token')
+  }
 
   return (
     <header className="px-4 py-5 bg-green-200 border-b border-black">
@@ -25,7 +33,8 @@ const Header = () => {
 
           <button
             type="button"
-            className="text-white text-sm bg-green-600 p-3 rounded-md uppercase font-bold"
+            className="text-white text-sm bg-green-600 hover:bg-green-800 p-3 rounded-md uppercase font-bold"
+            onClick={handleCerrarSesion}
           >Cerrar Sesion</button>
 
           <Busqueda />
