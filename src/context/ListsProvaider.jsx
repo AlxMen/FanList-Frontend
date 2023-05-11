@@ -14,6 +14,10 @@ const ListsProvaider = ({ children }) => {
   const [column, setColumn] = useState({})
   const [modalDelColumn, setModalDelColumn] = useState(false)
   const [buscador, setBuscador] = useState(false)
+  const [modalForCard, setModalForCard] = useState(false)
+  const [cards, setCards] = useState({})
+  const [card, setCard] = useState([])
+  const [modalDelCard, setModalDelCard] = useState(false)
 
   const navigate = useNavigate()
 
@@ -133,6 +137,7 @@ const ListsProvaider = ({ children }) => {
 
       const { data } = await clienteAxios.get(`/list/${id}`, config)
       setList(data.list)
+      setCards(data.cards);
     } catch (error) {
       console.log(error);
     }
@@ -250,6 +255,10 @@ const ListsProvaider = ({ children }) => {
     setModalDelColumn(!modalDelColumn)
   }
 
+  const handleModalCard = () => {
+    setModalForCard(!modalForCard)
+  }
+
   const eliminarColumn = async () => {
     try {
       const token = localStorage.getItem('token')
@@ -269,7 +278,7 @@ const ListsProvaider = ({ children }) => {
       })
 
       const listaActualizada = { ...list }
-      listaActualizada.columns = listaActualizada.columns.filter(columnState => columnState._id !== column._id )
+      listaActualizada.columns = listaActualizada.columns.filter(columnState => columnState._id !== column._id)
       setList(listaActualizada)
       setModalDelColumn(false)
       setColumn({})
@@ -283,6 +292,108 @@ const ListsProvaider = ({ children }) => {
 
   const handleBuscador = () => {
     setBuscador(!buscador)
+  }
+
+  const submitCard = async card => {
+
+    if (card?.id) {
+      await editarCard(card)
+    } else {
+      await crearCard(card)
+    }
+  }
+
+  const crearCard = async card => {
+    try {
+      const token = localStorage.getItem('token')
+      if (!token) return
+
+      const config = {
+        headers: {
+          "content-Type": "application/json",
+          Authorization: `Bearer ${token}`
+        }
+      }
+
+      const { data } = await clienteAxios.post('/card', card, config)
+
+      const cardsActualizados = [ ...cards, data]
+
+      setCards(cardsActualizados)
+      setAlerta({})
+      setModalForCard(false)
+    } catch (error) {
+      console.log(error);
+    }
+  }
+
+  const editarCard = async card => {
+
+    try {
+      const token = localStorage.getItem('token')
+      if (!token) return
+
+      const config = {
+        headers: {
+          "content-Type": "application/json",
+          Authorization: `Bearer ${token}`
+        }
+      }
+      
+      const { data } = await clienteAxios.put(`/card/${card.id}`, card, config)
+      
+      let cardsActualizados = [ ...cards ]
+      cardsActualizados = cardsActualizados.map(cardState => cardState._id === data._id ? data : cardState)
+
+      setCards(cardsActualizados)
+
+      setAlerta({})
+      setModalFormColumn(false)
+
+    } catch (error) {
+      console.log(error);
+    }
+  }
+
+  const handleModalEditCard = card => {
+    setCard(card)
+    setModalForCard(true)
+  }
+
+  const handleModalEliminarCard = card => {
+    setCard(card)
+    setModalDelCard(!modalDelCard)
+  }
+
+  const eliminarCard = async () => {
+    try {
+      const token = localStorage.getItem('token')
+      if (!token) return
+
+      const config = {
+        headers: {
+          "content-Type": "application/json",
+          Authorization: `Bearer ${token}`
+        }
+      }
+
+      const { data } = await clienteAxios.delete(`/card/${card._id}`, config)
+      setAlerta({
+        msg: data.msg,
+        error: false
+      })
+
+      let cardsActualizados = [ ...cards ]
+      cardsActualizados = cardsActualizados.filter(cardState => cardState._id !== card._id)
+      setCards(cardsActualizados)
+      setModalDelCard(false)
+      setCard({})
+      setTimeout(() => {
+        setAlerta({})
+      }, 3000);
+    } catch (error) {
+      console.log(error);
+    }
   }
 
   return (
@@ -305,7 +416,16 @@ const ListsProvaider = ({ children }) => {
         handleModalEliminarColumn,
         eliminarColumn,
         buscador,
-        handleBuscador
+        handleBuscador,
+        card,
+        cards,
+        modalForCard,
+        handleModalCard,
+        submitCard,
+        handleModalEditCard,
+        handleModalEliminarCard,
+        modalDelCard,
+        eliminarCard
       }}
     >
       {children}
